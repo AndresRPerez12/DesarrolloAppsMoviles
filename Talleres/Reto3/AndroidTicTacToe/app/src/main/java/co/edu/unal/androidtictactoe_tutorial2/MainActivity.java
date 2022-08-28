@@ -2,13 +2,18 @@ package co.edu.unal.androidtictactoe_tutorial2;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import co.edu.harding.tictactoe.TicTacToeGame;
 
@@ -29,6 +34,9 @@ public class MainActivity extends AppCompatActivity {
     private TextView mHumanWinsTextView;
     private TextView mAndroidWinsTextView;
     private TextView mTiesTextView;
+
+    static final int DIALOG_DIFFICULTY_ID = 0;
+    static final int DIALOG_QUIT_ID = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,14 +67,87 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
-        menu.add("New Game");
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.options_menu, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        startNewGame();
-        return true;
+        switch (item.getItemId()) {
+            case R.id.new_game:
+                startNewGame();
+                return true;
+            case R.id.ai_difficulty:
+                showDialog(DIALOG_DIFFICULTY_ID);
+                return true;
+            case R.id.quit:
+                showDialog(DIALOG_QUIT_ID);
+                return true;
+        }
+        return false;
+    }
+
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        Dialog dialog = null;
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        switch(id) {
+            case DIALOG_DIFFICULTY_ID:
+                builder.setTitle(R.string.difficulty_choose);
+                final CharSequence[] levels = {
+                        getResources().getString(R.string.difficulty_easy),
+                        getResources().getString(R.string.difficulty_harder),
+                        getResources().getString(R.string.difficulty_expert)};
+                // selected is the radio button that should be selected.
+                int selected;
+                switch(mGame.getDifficultyLevel()) {
+                    case Easy:
+                        selected = 0;
+                        break;
+                    case Harder:
+                        selected = 1;
+                        break;
+                    default:
+                        selected = 2;
+                        break;
+                }
+                builder.setSingleChoiceItems(levels, selected,
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int item) {
+                                dialog.dismiss(); // Close dialog
+                                switch(item) {
+                                    case 0:
+                                        mGame.setDifficultyLevel(TicTacToeGame.DifficultyLevel.Easy);
+                                        break;
+                                    case 1:
+                                        mGame.setDifficultyLevel(TicTacToeGame.DifficultyLevel.Harder);
+                                        break;
+                                    default:
+                                        mGame.setDifficultyLevel(TicTacToeGame.DifficultyLevel.Expert);
+                                        break;
+                                }
+                                // Display the selected difficulty level
+                                Toast.makeText(getApplicationContext(), levels[item],
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                dialog = builder.create();
+                break;
+            case DIALOG_QUIT_ID:
+                // Create the quit confirmation dialog
+                builder.setMessage(R.string.quit_question)
+                        .setCancelable(false)
+                        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                MainActivity.this.finish();
+                            }
+                        })
+                        .setNegativeButton(R.string.no, null);
+                dialog = builder.create();
+                break;
+        }
+        return dialog;
     }
 
     // Set up the game board.
