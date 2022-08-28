@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -14,6 +16,8 @@ public class MainActivity extends AppCompatActivity {
 
     // Represents the internal state of the game
     private TicTacToeGame mGame;
+    // Indicates if the current game is over
+    private boolean mGameOver;
     // Buttons making up the board
     private Button mBoardButtons[];
     // Various text displayed
@@ -39,9 +43,23 @@ public class MainActivity extends AppCompatActivity {
         startNewGame();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        menu.add("New Game");
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        startNewGame();
+        return true;
+    }
+
     // Set up the game board.
     private void startNewGame() {
         mGame.clearBoard();
+        mGameOver = false;
 
         // Reset all buttons
         for (int i = 0; i < mBoardButtons.length; i++) {
@@ -71,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
             this.location = location;
         }
         public void onClick(View view) {
+            if(mGameOver) return;
             if (mBoardButtons[location].isEnabled()) {
                 setMove(TicTacToeGame.HUMAN_PLAYER, location);
                 // If no winner yet, let the computer make a move
@@ -83,12 +102,16 @@ public class MainActivity extends AppCompatActivity {
                 }
                 if (winner == 0)
                     mInfoTextView.setText("It's your turn.");
-                else if (winner == 1)
+                else if (winner == 1) {
                     mInfoTextView.setText("It's a tie!");
-                else if (winner == 2)
+                    mGameOver = true;
+                }else if (winner == 2) {
                     mInfoTextView.setText("You won!");
-                else
+                    mGameOver = true;
+                }else{
                     mInfoTextView.setText("Android won!");
+                    mGameOver = true;
+                }
             }
         }
     }
