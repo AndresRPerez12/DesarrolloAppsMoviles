@@ -15,7 +15,7 @@ public class TicTacToeGame {
 
     private char mBoard[] = {OPEN_SPOT,OPEN_SPOT,OPEN_SPOT,OPEN_SPOT,OPEN_SPOT,OPEN_SPOT,OPEN_SPOT,
             OPEN_SPOT,OPEN_SPOT};
-    private final int BOARD_SIZE = 9;
+    public static final int BOARD_SIZE = 9;
 
     // Characters used to represent the human, computer, and open spots
     public static final char HUMAN_PLAYER = 'X';
