@@ -22,6 +22,13 @@ public class MainActivity extends AppCompatActivity {
     private Button mBoardButtons[];
     // Various text displayed
     private TextView mInfoTextView;
+    // Game history counters and texts
+    private int mHumanWins;
+    private int mAndroidWins;
+    private int mTies;
+    private TextView mHumanWinsTextView;
+    private TextView mAndroidWinsTextView;
+    private TextView mTiesTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +46,12 @@ public class MainActivity extends AppCompatActivity {
         mBoardButtons[7] = (Button) findViewById(R.id.eight);
         mBoardButtons[8] = (Button) findViewById(R.id.nine);
         mInfoTextView = (TextView) findViewById(R.id.information);
+        mHumanWins = 0;
+        mAndroidWins = 0;
+        mTies = 0;
+        mHumanWinsTextView = (TextView) findViewById(R.id.human_wins);
+        mAndroidWinsTextView = (TextView) findViewById(R.id.android_wins);
+        mTiesTextView = (TextView) findViewById(R.id.ties);
         mGame = new TicTacToeGame();
         startNewGame();
     }
@@ -104,12 +117,18 @@ public class MainActivity extends AppCompatActivity {
                     mInfoTextView.setText(R.string.turn_human);
                 else if (winner == 1) {
                     mInfoTextView.setText(R.string.result_tie);
+                    mTies ++;
+                    mTiesTextView.setText("Ties: " + mTies);
                     mGameOver = true;
                 }else if (winner == 2) {
                     mInfoTextView.setText(R.string.result_human_wins);
+                    mHumanWins ++;
+                    mHumanWinsTextView.setText("Human: " + mHumanWins);
                     mGameOver = true;
                 }else{
                     mInfoTextView.setText(R.string.result_computer_wins);
+                    mAndroidWins ++;
+                    mAndroidWinsTextView.setText("Android: " + mAndroidWins);
                     mGameOver = true;
                 }
             }
