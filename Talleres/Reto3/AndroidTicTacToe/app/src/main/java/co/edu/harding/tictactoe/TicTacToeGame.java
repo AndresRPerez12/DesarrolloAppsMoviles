@@ -24,6 +24,11 @@ public class TicTacToeGame {
 
     private Random mRand;
 
+    // The computer's difficulty levels
+    public enum DifficultyLevel {Easy, Harder, Expert};
+    // Current difficulty level
+    private DifficultyLevel mDifficultyLevel = DifficultyLevel.Expert;
+
     public TicTacToeGame() {
         // Seed the random number generator
         mRand = new Random();
@@ -57,12 +62,36 @@ public class TicTacToeGame {
         mBoard[location] = player;
     }
 
-    /** Return the best move for the computer to make. You must call setMove()
-     * to actually make the computer move to that location.
-     * @return The best move for the computer to make (0-8).
+    /** Return a move for the computer to make based on the difficulty level.
+     * You must call setMove() to actually make the computer move to that location.
+     * @return The a move for the computer to make (0-8) based on the difficulty level.
      */
-    public int getComputerMove(){
-        // First see if there's a move O can make to win
+    public int getComputerMove() {
+        int move = -1;
+        if (mDifficultyLevel == DifficultyLevel.Easy)
+            move = getRandomMove();
+        else if (mDifficultyLevel == DifficultyLevel.Harder) {
+            move = getWinningMove();
+            if (move == -1)
+                move = getRandomMove();
+        }
+        else if (mDifficultyLevel == DifficultyLevel.Expert) {
+        // Try to win, but if that's not possible, block.
+        // If that's not possible, move anywhere.
+            move = getWinningMove();
+            if (move == -1)
+                move = getBlockingMove();
+            if (move == -1)
+                move = getRandomMove();
+        }
+        return move;
+    }
+
+    /** Return a winning move for the computer to make if one exists. You must call setMove()
+     * to actually make the computer move to that location.
+     * @return A winning move for the computer to make (0-8) or -1 if no such move exists.
+     */
+    private int getWinningMove() {
         for (int i = 0; i < BOARD_SIZE; i++) {
             if (mBoard[i] == OPEN_SPOT) {
                 mBoard[i] = COMPUTER_PLAYER;
@@ -71,8 +100,14 @@ public class TicTacToeGame {
                 if(game_result == 3) return i;
             }
         }
+        return -1;
+    }
 
-        // See if there's a move O can make to block X from winning
+    /** Return a blocking move for the computer to make. You must call setMove()
+     * to actually make the computer move to that location.
+     * @return A blocking move for the computer to make (0-8).
+     */
+    private int getBlockingMove() {
         for (int i = 0; i < BOARD_SIZE; i++) {
             if (mBoard[i] == OPEN_SPOT) {
                 mBoard[i] = HUMAN_PLAYER;
@@ -81,8 +116,14 @@ public class TicTacToeGame {
                 if(game_result == 2) return i;
             }
         }
+        return -1;
+    }
 
-        // Generate random move
+    /** Return a random move for the computer to make if one exists. You must call setMove()
+     * to actually make the computer move to that location.
+     * @return A random move for the computer to make (0-8) or -1 if no such move exists.
+     */
+    private int getRandomMove() {
         int move;
         do
         {
@@ -146,5 +187,12 @@ public class TicTacToeGame {
 
         // If we make it through the previous loop, all places are taken, so it's a tie
         return 1;
+    }
+
+    public DifficultyLevel getDifficultyLevel() {
+        return mDifficultyLevel;
+    }
+    public void setDifficultyLevel(DifficultyLevel difficultyLevel) {
+        mDifficultyLevel = difficultyLevel;
     }
 }
