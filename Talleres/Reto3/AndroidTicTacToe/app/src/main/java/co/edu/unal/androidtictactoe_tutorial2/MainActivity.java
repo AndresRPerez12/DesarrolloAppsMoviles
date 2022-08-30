@@ -5,7 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -35,8 +37,13 @@ public class MainActivity extends AppCompatActivity {
 
     private BoardView mBoardView;
 
+    MediaPlayer mHumanMediaPlayer;
+    MediaPlayer mComputerMediaPlayer;
+
     static final int DIALOG_DIFFICULTY_ID = 0;
     static final int DIALOG_QUIT_ID = 1;
+
+    boolean isHumanTurn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
         mHumanWins = 0;
         mAndroidWins = 0;
         mTies = 0;
+        isHumanTurn = true;
         mHumanWinsTextView = (TextView) findViewById(R.id.human_wins);
         mAndroidWinsTextView = (TextView) findViewById(R.id.android_wins);
         mTiesTextView = (TextView) findViewById(R.id.ties);
@@ -158,9 +166,34 @@ public class MainActivity extends AppCompatActivity {
     private boolean setMove(char player, int location) {
         if (mGame.setMove(player, location)) {
             mBoardView.invalidate(); // Redraw the board
+            // Play the sound effect
+            if(player == TicTacToeGame.HUMAN_PLAYER) mHumanMediaPlayer.start();
+            else mComputerMediaPlayer.start();
             return true;
         }
         return false;
+    }
+
+    private void checkForWinnerAndUpdatePrompts(){
+        int winner = mGame.checkForWinner();
+        if (winner == 0)
+            mInfoTextView.setText(R.string.turn_human);
+        else if (winner == 1) {
+            mInfoTextView.setText(R.string.result_tie);
+            mTies++;
+            mTiesTextView.setText("Ties: " + mTies);
+            mGameOver = true;
+        } else if (winner == 2) {
+            mInfoTextView.setText(R.string.result_human_wins);
+            mHumanWins++;
+            mHumanWinsTextView.setText("Human: " + mHumanWins);
+            mGameOver = true;
+        } else {
+            mInfoTextView.setText(R.string.result_computer_wins);
+            mAndroidWins++;
+            mAndroidWinsTextView.setText("Android: " + mAndroidWins);
+            mGameOver = true;
+        }
     }
 
     // Listen for touches on the board
@@ -170,37 +203,38 @@ public class MainActivity extends AppCompatActivity {
             int col = (int) event.getX() / mBoardView.getBoardCellWidth();
             int row = (int) event.getY() / mBoardView.getBoardCellHeight();
             int location = row * 3 + col;
-            if (!mGameOver && setMove(TicTacToeGame.HUMAN_PLAYER, location)) {
+            if (!mGameOver && isHumanTurn && setMove(TicTacToeGame.HUMAN_PLAYER, location)) {
                 setMove(TicTacToeGame.HUMAN_PLAYER, location);
                 // If no winner yet, let the computer make a move
                 int winner = mGame.checkForWinner();
-                if (winner == 0) {
+                if(winner != 0) checkForWinnerAndUpdatePrompts();
+                else {
                     mInfoTextView.setText(R.string.turn_computer);
-                    int move = mGame.getComputerMove();
-                    setMove(TicTacToeGame.COMPUTER_PLAYER, move);
-                    winner = mGame.checkForWinner();
-                }
-                if (winner == 0)
-                    mInfoTextView.setText(R.string.turn_human);
-                else if (winner == 1) {
-                    mInfoTextView.setText(R.string.result_tie);
-                    mTies++;
-                    mTiesTextView.setText("Ties: " + mTies);
-                    mGameOver = true;
-                } else if (winner == 2) {
-                    mInfoTextView.setText(R.string.result_human_wins);
-                    mHumanWins++;
-                    mHumanWinsTextView.setText("Human: " + mHumanWins);
-                    mGameOver = true;
-                } else {
-                    mInfoTextView.setText(R.string.result_computer_wins);
-                    mAndroidWins++;
-                    mAndroidWinsTextView.setText("Android: " + mAndroidWins);
-                    mGameOver = true;
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        public void run() {
+                            int move = mGame.getComputerMove();
+                            setMove(TicTacToeGame.COMPUTER_PLAYER, move);
+                            checkForWinnerAndUpdatePrompts();
+                        }
+                    }, 1000);
                 }
             }
             // So we aren't notified of continued events when finger is moved
             return false;
         }
     };
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mHumanMediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.humansound);
+        mComputerMediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.computersound);
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mHumanMediaPlayer.release();
+        mComputerMediaPlayer.release();
+    }
 }
