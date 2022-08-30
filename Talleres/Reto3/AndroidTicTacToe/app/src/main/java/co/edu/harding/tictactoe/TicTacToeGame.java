@@ -57,9 +57,10 @@ public class TicTacToeGame {
      * @param player - The HUMAN_PLAYER or COMPUTER_PLAYER
      * @param location - The location (0-8) to place the move
      */
-    public void setMove(char player, int location){
-        if( mBoard[location] != OPEN_SPOT ) return;
+    public boolean setMove(char player, int location){
+        if( mBoard[location] != OPEN_SPOT ) return false;
         mBoard[location] = player;
+        return true;
     }
 
     /** Return a move for the computer to make based on the difficulty level.
@@ -187,6 +188,11 @@ public class TicTacToeGame {
 
         // If we make it through the previous loop, all places are taken, so it's a tie
         return 1;
+    }
+
+    public char getBoardOccupant(int pos){
+        if(pos < 0 || pos > 8) return OPEN_SPOT;
+        return mBoard[pos];
     }
 
     public DifficultyLevel getDifficultyLevel() {

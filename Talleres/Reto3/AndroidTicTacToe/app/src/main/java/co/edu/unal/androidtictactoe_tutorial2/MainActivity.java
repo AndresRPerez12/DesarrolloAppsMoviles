@@ -5,16 +5,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import co.edu.harding.tictactoe.BoardView;
 import co.edu.harding.tictactoe.TicTacToeGame;
 
 public class MainActivity extends AppCompatActivity {
@@ -23,8 +23,6 @@ public class MainActivity extends AppCompatActivity {
     private TicTacToeGame mGame;
     // Indicates if the current game is over
     private boolean mGameOver;
-    // Buttons making up the board
-    private Button mBoardButtons[];
     // Various text displayed
     private TextView mInfoTextView;
     // Game history counters and texts
@@ -35,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
     private TextView mAndroidWinsTextView;
     private TextView mTiesTextView;
 
+    private BoardView mBoardView;
+
     static final int DIALOG_DIFFICULTY_ID = 0;
     static final int DIALOG_QUIT_ID = 1;
 
@@ -43,16 +43,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mBoardButtons = new Button[TicTacToeGame.BOARD_SIZE];
-        mBoardButtons[0] = (Button) findViewById(R.id.one);
-        mBoardButtons[1] = (Button) findViewById(R.id.two);
-        mBoardButtons[2] = (Button) findViewById(R.id.three);
-        mBoardButtons[3] = (Button) findViewById(R.id.four);
-        mBoardButtons[4] = (Button) findViewById(R.id.five);
-        mBoardButtons[5] = (Button) findViewById(R.id.six);
-        mBoardButtons[6] = (Button) findViewById(R.id.seven);
-        mBoardButtons[7] = (Button) findViewById(R.id.eight);
-        mBoardButtons[8] = (Button) findViewById(R.id.nine);
         mInfoTextView = (TextView) findViewById(R.id.information);
         mHumanWins = 0;
         mAndroidWins = 0;
@@ -61,6 +51,10 @@ public class MainActivity extends AppCompatActivity {
         mAndroidWinsTextView = (TextView) findViewById(R.id.android_wins);
         mTiesTextView = (TextView) findViewById(R.id.ties);
         mGame = new TicTacToeGame();
+        mBoardView = (BoardView) findViewById(R.id.board);
+        mBoardView.setGame(mGame);
+        // Listen for touches on the board
+        mBoardView.setOnTouchListener(mTouchListener);
         startNewGame();
     }
 
@@ -155,36 +149,28 @@ public class MainActivity extends AppCompatActivity {
         mGame.clearBoard();
         mGameOver = false;
 
-        // Reset all buttons
-        for (int i = 0; i < mBoardButtons.length; i++) {
-            mBoardButtons[i].setText("");
-            mBoardButtons[i].setEnabled(true);
-            mBoardButtons[i].setOnClickListener(new ButtonClickListener(i));
-        }
+        mBoardView.invalidate(); // Redraw the board
 
         // Human goes first
         mInfoTextView.setText(R.string.first_human);
     } // End of startNewGame
 
-    private void setMove(char player, int location) {
-        mGame.setMove(player, location);
-        mBoardButtons[location].setEnabled(false);
-        mBoardButtons[location].setText(String.valueOf(player));
-        if (player == TicTacToeGame.HUMAN_PLAYER)
-            mBoardButtons[location].setTextColor(Color.rgb(0, 200, 0));
-        else
-            mBoardButtons[location].setTextColor(Color.rgb(200, 0, 0));
+    private boolean setMove(char player, int location) {
+        if (mGame.setMove(player, location)) {
+            mBoardView.invalidate(); // Redraw the board
+            return true;
+        }
+        return false;
     }
 
-    // Handles clicks on the game board buttons
-    private class ButtonClickListener implements View.OnClickListener {
-        int location;
-        public ButtonClickListener(int location) {
-            this.location = location;
-        }
-        public void onClick(View view) {
-            if(mGameOver) return;
-            if (mBoardButtons[location].isEnabled()) {
+    // Listen for touches on the board
+    private View.OnTouchListener mTouchListener = new View.OnTouchListener() {
+        public boolean onTouch(View v, MotionEvent event) {
+            // Determine which cell was touched
+            int col = (int) event.getX() / mBoardView.getBoardCellWidth();
+            int row = (int) event.getY() / mBoardView.getBoardCellHeight();
+            int location = row * 3 + col;
+            if (!mGameOver && setMove(TicTacToeGame.HUMAN_PLAYER, location)) {
                 setMove(TicTacToeGame.HUMAN_PLAYER, location);
                 // If no winner yet, let the computer make a move
                 int winner = mGame.checkForWinner();
@@ -198,21 +184,23 @@ public class MainActivity extends AppCompatActivity {
                     mInfoTextView.setText(R.string.turn_human);
                 else if (winner == 1) {
                     mInfoTextView.setText(R.string.result_tie);
-                    mTies ++;
+                    mTies++;
                     mTiesTextView.setText("Ties: " + mTies);
                     mGameOver = true;
-                }else if (winner == 2) {
+                } else if (winner == 2) {
                     mInfoTextView.setText(R.string.result_human_wins);
-                    mHumanWins ++;
+                    mHumanWins++;
                     mHumanWinsTextView.setText("Human: " + mHumanWins);
                     mGameOver = true;
-                }else{
+                } else {
                     mInfoTextView.setText(R.string.result_computer_wins);
-                    mAndroidWins ++;
+                    mAndroidWins++;
                     mAndroidWinsTextView.setText("Android: " + mAndroidWins);
                     mGameOver = true;
                 }
             }
+            // So we aren't notified of continued events when finger is moved
+            return false;
         }
-    }
+    };
 }
