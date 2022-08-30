@@ -210,12 +210,14 @@ public class MainActivity extends AppCompatActivity {
                 if(winner != 0) checkForWinnerAndUpdatePrompts();
                 else {
                     mInfoTextView.setText(R.string.turn_computer);
+                    isHumanTurn = false;
                     Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {
                         public void run() {
                             int move = mGame.getComputerMove();
                             setMove(TicTacToeGame.COMPUTER_PLAYER, move);
                             checkForWinnerAndUpdatePrompts();
+                            isHumanTurn = true;
                         }
                     }, 1000);
                 }
