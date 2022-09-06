@@ -201,4 +201,11 @@ public class TicTacToeGame {
     public void setDifficultyLevel(DifficultyLevel difficultyLevel) {
         mDifficultyLevel = difficultyLevel;
     }
+
+    public char[] getBoardState(){
+        return mBoard;
+    }
+    public void setBoardState(char[] boardState){
+        mBoard = boardState;
+    }
 }

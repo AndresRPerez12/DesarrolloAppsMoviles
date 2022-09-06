@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
@@ -45,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
 
     boolean isHumanTurn;
 
+    private SharedPreferences mPrefs;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,7 +66,41 @@ public class MainActivity extends AppCompatActivity {
         mBoardView.setGame(mGame);
         // Listen for touches on the board
         mBoardView.setOnTouchListener(mTouchListener);
-        startNewGame();
+        if (savedInstanceState == null) {
+            startNewGame();
+        }
+        else {
+            // Restore the game's state
+            mGame.setBoardState(savedInstanceState.getCharArray("board"));
+            mGameOver = savedInstanceState.getBoolean("mGameOver");
+            mInfoTextView.setText(savedInstanceState.getCharSequence("info"));
+            isHumanTurn = savedInstanceState.getBoolean("isHumanTurn");
+        }
+        mPrefs = getSharedPreferences("ttt_prefs", MODE_PRIVATE);
+        mPrefs = getSharedPreferences("ttt_prefs", MODE_PRIVATE);
+        // Restore the scores
+        mHumanWins = mPrefs.getInt("mHumanWins", 0);
+        mAndroidWins = mPrefs.getInt("mAndroidWins", 0);
+        mTies = mPrefs.getInt("mTies", 0);
+        int selectedDifficulty = mTies = mPrefs.getInt("mDifficulty", 2);
+        switch(selectedDifficulty) {
+            case 0:
+                mGame.setDifficultyLevel(TicTacToeGame.DifficultyLevel.Easy);
+                break;
+            case 1:
+                mGame.setDifficultyLevel(TicTacToeGame.DifficultyLevel.Harder);
+                break;
+            default:
+                mGame.setDifficultyLevel(TicTacToeGame.DifficultyLevel.Expert);
+                break;
+        }
+        displayScores();
+    }
+
+    private void displayScores() {
+        mHumanWinsTextView.setText("Human: " + mHumanWins);
+        mAndroidWinsTextView.setText("Android: " + mAndroidWins);
+        mTiesTextView.setText("Ties: " + mTies);
     }
 
     @Override
@@ -82,6 +119,12 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             case R.id.ai_difficulty:
                 showDialog(DIALOG_DIFFICULTY_ID);
+                return true;
+            case R.id.reset_scores:
+                mHumanWins = 0;
+                mAndroidWins = 0;
+                mTies = 0;
+                displayScores();
                 return true;
             case R.id.quit:
                 showDialog(DIALOG_QUIT_ID);
@@ -233,10 +276,44 @@ public class MainActivity extends AppCompatActivity {
         mHumanMediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.humansound);
         mComputerMediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.computersound);
     }
+
     @Override
     protected void onPause() {
         super.onPause();
         mHumanMediaPlayer.release();
         mComputerMediaPlayer.release();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putCharArray("board", mGame.getBoardState());
+        outState.putBoolean("mGameOver", mGameOver);
+        outState.putCharSequence("info", mInfoTextView.getText());
+        outState.putBoolean("isHumanTurn", isHumanTurn);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        // Save the current scores
+        SharedPreferences.Editor ed = mPrefs.edit();
+        ed.putInt("mHumanWins", mHumanWins);
+        ed.putInt("mAndroidWins", mAndroidWins);
+        ed.putInt("mTies", mTies);
+        int selectedDifficulty;
+        switch(mGame.getDifficultyLevel()) {
+            case Easy:
+                selectedDifficulty = 0;
+                break;
+            case Harder:
+                selectedDifficulty = 1;
+                break;
+            default:
+                selectedDifficulty = 2;
+                break;
+        }
+        ed.putInt("mDifficulty", selectedDifficulty);
+        ed.commit();
     }
 }
