@@ -82,6 +82,18 @@ public class MainActivity extends AppCompatActivity {
         mHumanWins = mPrefs.getInt("mHumanWins", 0);
         mAndroidWins = mPrefs.getInt("mAndroidWins", 0);
         mTies = mPrefs.getInt("mTies", 0);
+        int selectedDifficulty = mTies = mPrefs.getInt("mDifficulty", 2);
+        switch(selectedDifficulty) {
+            case 0:
+                mGame.setDifficultyLevel(TicTacToeGame.DifficultyLevel.Easy);
+                break;
+            case 1:
+                mGame.setDifficultyLevel(TicTacToeGame.DifficultyLevel.Harder);
+                break;
+            default:
+                mGame.setDifficultyLevel(TicTacToeGame.DifficultyLevel.Expert);
+                break;
+        }
         displayScores();
     }
 
@@ -289,6 +301,19 @@ public class MainActivity extends AppCompatActivity {
         ed.putInt("mHumanWins", mHumanWins);
         ed.putInt("mAndroidWins", mAndroidWins);
         ed.putInt("mTies", mTies);
+        int selectedDifficulty;
+        switch(mGame.getDifficultyLevel()) {
+            case Easy:
+                selectedDifficulty = 0;
+                break;
+            case Harder:
+                selectedDifficulty = 1;
+                break;
+            default:
+                selectedDifficulty = 2;
+                break;
+        }
+        ed.putInt("mDifficulty", selectedDifficulty);
         ed.commit();
     }
 }
