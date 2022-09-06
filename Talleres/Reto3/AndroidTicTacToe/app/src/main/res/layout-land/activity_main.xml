@@ -6,9 +6,9 @@
 
     <co.edu.harding.tictactoe.BoardView
         android:id="@+id/board"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
-        android:layout_marginTop="10dp"
+        android:layout_width="260dp"
+        android:layout_height="260dp"
+        android:layout_marginTop="0dp"
         android:layout_marginLeft="10dp">
     </co.edu.harding.tictactoe.BoardView>
 
