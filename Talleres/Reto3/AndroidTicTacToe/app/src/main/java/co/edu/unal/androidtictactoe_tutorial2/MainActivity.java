@@ -132,6 +132,12 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra(OnlineGameActivity.EXTRA_MESSAGE, "creator");
                 startActivity(intent);
                 return true;
+            case R.id.join_match:
+                Intent intent_join = new Intent(this, OnlineGameActivity.class);
+                intent_join.putExtra(OnlineGameActivity.EXTRA_MESSAGE, "opponent");
+                intent_join.putExtra(OnlineGameActivity.GAME_CODE, "1663710009452");
+                startActivity(intent_join);
+                return true;
             case R.id.quit:
                 showDialog(DIALOG_QUIT_ID);
                 return true;

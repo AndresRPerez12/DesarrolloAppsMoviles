@@ -9,6 +9,8 @@
         android:title="Reset Scores" />
     <item android:id="@+id/create_match"
         android:title="Create online match"/>
+    <item android:id="@+id/join_match"
+        android:title="Join online match"/>
     <item android:id="@+id/quit"
         android:title="Quit"
         android:icon="@drawable/quit_game" />

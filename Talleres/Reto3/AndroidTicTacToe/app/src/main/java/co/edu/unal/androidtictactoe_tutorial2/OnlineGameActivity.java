@@ -1,5 +1,6 @@
 package co.edu.unal.androidtictactoe_tutorial2;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
@@ -9,6 +10,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -16,10 +18,14 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.sql.Timestamp;
+import java.util.Map;
 
 public class OnlineGameActivity extends AppCompatActivity {
 
@@ -68,15 +74,17 @@ public class OnlineGameActivity extends AppCompatActivity {
         mBoardView.setOnTouchListener(mTouchListener);
         checkForWinnerAndUpdatePrompts();
         if( getIntent().getStringExtra(EXTRA_MESSAGE).equals("creator") ){
-            mySpaces = '1';
+            mySpaces = BoardState.PLAYER_1;
             mGameCode = "" + System.currentTimeMillis();
             mGameCodeTextView.setText("Game Code: " + mGameCode);
             boardState = new BoardState(mGameCode);
             writeNewBoard(boardState);
         }else{
-            mySpaces = '2';
+            mySpaces = BoardState.PLAYER_2;
             mGameCode = getIntent().getStringExtra(GAME_CODE);
             mGameCodeTextView.setText("Game Code: " + mGameCode);
+            isHumanTurn = false;
+            loadNewBoard();
         }
     }
 
@@ -189,6 +197,38 @@ public class OnlineGameActivity extends AppCompatActivity {
 
     private void writeNewBoard( BoardState boardState ){
         myRef.child("boards").child(boardState.gameId).setValue(boardState);
+    }
+
+    private void loadNewBoard(  ){
+        myRef.child("boards").child(mGameCode).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (!task.isSuccessful()) {
+                    Log.e("firebase", "Error getting data", task.getException());
+                }
+                else {
+                    Map<String,Object> returnedValue = (Map) task.getResult().getValue();
+                    BoardState boardState = new BoardState(mGameCode,
+                            (String) returnedValue.get("mBoard"));
+
+                    mGame.setBoardState(boardStateToLocalBoard(boardState.mBoard));
+                    mBoardView.invalidate();
+                }
+            }
+        });
+    }
+
+    private char[] boardStateToLocalBoard( String boardState ){
+        String ret = "";
+        for( int i = 0 ; i < boardState.length() ; i ++ ){
+            if( boardState.charAt(i) == BoardState.OPEN_SPOT )
+                ret = ret + TicTacToeGame.OPEN_SPOT;
+            else if( boardState.charAt(i) == mySpaces )
+                ret = ret + TicTacToeGame.HUMAN_PLAYER;
+            else
+                ret = ret + TicTacToeGame.COMPUTER_PLAYER;
+        }
+        return ret.toCharArray();
     }
 
 }

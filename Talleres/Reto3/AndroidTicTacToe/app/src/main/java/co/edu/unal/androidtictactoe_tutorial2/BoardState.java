@@ -27,4 +27,9 @@ public class BoardState {
         }
     }
 
+    public BoardState(String gameId, String mBoard){
+        this.gameId = gameId;
+        this.mBoard = mBoard;
+    }
+
 }
