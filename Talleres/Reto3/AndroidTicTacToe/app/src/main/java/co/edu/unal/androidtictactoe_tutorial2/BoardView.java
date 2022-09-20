@@ -1,4 +1,4 @@
-package co.edu.harding.tictactoe;
+package co.edu.unal.androidtictactoe_tutorial2;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -9,8 +9,6 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.View;
-
-import co.edu.unal.androidtictactoe_tutorial2.R;
 
 public class BoardView extends View {
     // Width of the board grid lines

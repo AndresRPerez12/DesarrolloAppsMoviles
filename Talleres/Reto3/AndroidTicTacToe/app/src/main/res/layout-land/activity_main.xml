@@ -4,13 +4,13 @@
     android:layout_height="fill_parent"
     android:gravity="center_horizontal">
 
-    <co.edu.harding.tictactoe.BoardView
+    <co.edu.unal.androidtictactoe_tutorial2.BoardView
         android:id="@+id/board"
         android:layout_width="260dp"
         android:layout_height="260dp"
         android:layout_marginTop="0dp"
         android:layout_marginLeft="10dp">
-    </co.edu.harding.tictactoe.BoardView>
+    </co.edu.unal.androidtictactoe_tutorial2.BoardView>
 
     <RelativeLayout
         android:layout_width="match_parent"

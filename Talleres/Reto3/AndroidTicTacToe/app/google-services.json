@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "856178918997",
+    "firebase_url": "https://dadm-66d5f-default-rtdb.firebaseio.com",
+    "project_id": "dadm-66d5f",
+    "storage_bucket": "dadm-66d5f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:856178918997:android:f8e83df76d62b2424df6dc",
+        "android_client_info": {
+          "package_name": "co.edu.unal.androidtictactoe_tutorial2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "856178918997-aljli7h2nslr97ibqoprs910vfsd5m5t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC660bT8RSg-8zMHtg7Cdh_3P1Pgtefryw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "856178918997-aljli7h2nslr97ibqoprs910vfsd5m5t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

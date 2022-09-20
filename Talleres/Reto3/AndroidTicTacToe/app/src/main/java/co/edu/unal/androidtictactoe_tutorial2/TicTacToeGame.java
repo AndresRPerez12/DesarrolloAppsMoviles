@@ -1,4 +1,4 @@
-package co.edu.harding.tictactoe;
+package co.edu.unal.androidtictactoe_tutorial2;
 
 /* TicTacToeConsole.java
  * By Frank McCown (Harding University)

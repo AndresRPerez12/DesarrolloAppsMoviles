@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -17,8 +18,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import co.edu.harding.tictactoe.BoardView;
-import co.edu.harding.tictactoe.TicTacToeGame;
+import com.google.firebase.FirebaseApp;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FirebaseApp.initializeApp(this);
         setContentView(R.layout.activity_main);
 
         mInfoTextView = (TextView) findViewById(R.id.information);
@@ -125,6 +126,11 @@ public class MainActivity extends AppCompatActivity {
                 mAndroidWins = 0;
                 mTies = 0;
                 displayScores();
+                return true;
+            case R.id.create_match:
+                Intent intent = new Intent(this, OnlineGameActivity.class);
+                intent.putExtra(OnlineGameActivity.EXTRA_MESSAGE, "creator");
+                startActivity(intent);
                 return true;
             case R.id.quit:
                 showDialog(DIALOG_QUIT_ID);
