@@ -9,23 +9,23 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.textfield.TextInputEditText;
 
-public class CreateGameActivity extends AppCompatActivity {
+public class JoinGameActivity extends AppCompatActivity {
 
     private TextInputEditText textInput;
-    private Button createGameButton;
+    private Button joinGameButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.create_game);
+        setContentView(R.layout.join_game);
         textInput = (TextInputEditText) findViewById(R.id.gameCodeTextInput);
-        createGameButton = (Button) findViewById(R.id.createGameButton);
-        CreateGameActivity currentActivity = this;
-        createGameButton.setOnClickListener(new View.OnClickListener() {
+        joinGameButton = (Button) findViewById(R.id.joinGameButton);
+        JoinGameActivity currentActivity = this;
+        joinGameButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent_create = new Intent(currentActivity, OnlineGameActivity.class);
-                intent_create.putExtra(OnlineGameActivity.EXTRA_MESSAGE, "creator");
+                intent_create.putExtra(OnlineGameActivity.EXTRA_MESSAGE, "opponent");
                 intent_create.putExtra(OnlineGameActivity.GAME_CODE,
                         textInput.getText().toString().trim());
                 startActivity(intent_create);

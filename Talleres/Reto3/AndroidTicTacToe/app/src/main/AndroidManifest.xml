@@ -20,6 +20,9 @@
             android:name=".CreateGameActivity"
             android:exported="false" />
         <activity
+            android:name=".JoinGameActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

@@ -132,9 +132,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent_create);
                 return true;
             case R.id.join_match:
-                Intent intent_join = new Intent(this, OnlineGameActivity.class);
-                intent_join.putExtra(OnlineGameActivity.EXTRA_MESSAGE, "opponent");
-                intent_join.putExtra(OnlineGameActivity.GAME_CODE, "1663710009452");
+                Intent intent_join = new Intent(this, JoinGameActivity.class);
                 startActivity(intent_join);
                 return true;
             case R.id.quit:
