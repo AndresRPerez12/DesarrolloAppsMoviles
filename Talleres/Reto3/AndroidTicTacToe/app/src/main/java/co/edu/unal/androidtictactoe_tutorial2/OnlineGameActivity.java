@@ -76,7 +76,7 @@ public class OnlineGameActivity extends AppCompatActivity {
         mBoardView.setOnTouchListener(mTouchListener);
         if( getIntent().getStringExtra(EXTRA_MESSAGE).equals("creator") ){
             mySpaces = BoardState.PLAYER_1;
-            mGameCode = "" + System.currentTimeMillis();
+            mGameCode = getIntent().getStringExtra(GAME_CODE);
             mGameCodeTextView.setText("Game Code: " + mGameCode);
             boardState = new BoardState(mGameCode);
             mInfoTextView.setText(R.string.turn_human);
@@ -109,8 +109,14 @@ public class OnlineGameActivity extends AppCompatActivity {
                 startActivity(intent);
                 return true;
             case R.id.create_match:
+                Intent intent_create = new Intent(this, CreateGameActivity.class);
+                startActivity(intent_create);
                 return true;
             case R.id.join_match:
+                Intent intent_join = new Intent(this, OnlineGameActivity.class);
+                intent_join.putExtra(OnlineGameActivity.EXTRA_MESSAGE, "opponent");
+                intent_join.putExtra(OnlineGameActivity.GAME_CODE, "1663710009452");
+                startActivity(intent_join);
                 return true;
             case R.id.quit:
                 showDialog(DIALOG_QUIT_ID);

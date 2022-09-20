@@ -128,9 +128,8 @@ public class MainActivity extends AppCompatActivity {
                 displayScores();
                 return true;
             case R.id.create_match:
-                Intent intent = new Intent(this, OnlineGameActivity.class);
-                intent.putExtra(OnlineGameActivity.EXTRA_MESSAGE, "creator");
-                startActivity(intent);
+                Intent intent_create = new Intent(this, CreateGameActivity.class);
+                startActivity(intent_create);
                 return true;
             case R.id.join_match:
                 Intent intent_join = new Intent(this, OnlineGameActivity.class);
