@@ -1,4 +1,4 @@
-package co.edu.harding.tictactoe;
+package co.edu.unal.androidtictactoe_tutorial2;
 
 /* TicTacToeConsole.java
  * By Frank McCown (Harding University)
@@ -20,7 +20,7 @@ public class TicTacToeGame {
     // Characters used to represent the human, computer, and open spots
     public static final char HUMAN_PLAYER = 'X';
     public static final char COMPUTER_PLAYER = 'O';
-    public static final char OPEN_SPOT = ' ';
+    public static final char OPEN_SPOT = '-';
 
     private Random mRand;
 

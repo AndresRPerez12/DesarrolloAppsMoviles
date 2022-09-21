@@ -14,6 +14,15 @@
         android:theme="@style/Theme.AndroidTicTacToeTutorial2"
         tools:targetApi="31">
         <activity
+            android:name=".OnlineGameActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CreateGameActivity"
+            android:exported="false" />
+        <activity
+            android:name=".JoinGameActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

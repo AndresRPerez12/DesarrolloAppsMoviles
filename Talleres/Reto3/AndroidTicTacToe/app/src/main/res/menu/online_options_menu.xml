@@ -1,0 +1,11 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/single_player"
+        android:title="Single Player" />
+    <item android:id="@+id/create_match"
+        android:title="Create match"/>
+    <item android:id="@+id/join_match"
+        android:title="Join Match" />
+    <item android:id="@+id/quit"
+        android:title="Quit"
+        android:icon="@drawable/quit_game" />
+</menu>
