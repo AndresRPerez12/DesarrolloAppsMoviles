@@ -1,4 +1,4 @@
-package co.edu.unal.usersdatabase.dataAccess;
+package co.edu.unal.usersdatabase.dataAccess.repository;
 
 import android.content.Context;
 
@@ -35,7 +35,7 @@ public class CompanyRepository {
         database.companyDao().createCompany(company);
     }
 
-    public void updateCompany(final Company company){
+    public void updateCompany(Company company){
         database.companyDao().updateCompany(company);
     }
 
