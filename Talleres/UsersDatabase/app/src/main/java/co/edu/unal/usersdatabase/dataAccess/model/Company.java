@@ -26,7 +26,7 @@ public class Company implements Serializable {
     private String email;
 
     @ColumnInfo(name = "services")
-    private List<String> services;
+    private String services;
 
     @ColumnInfo(name = "classification")
     private String classification;
@@ -71,11 +71,11 @@ public class Company implements Serializable {
         this.email = email;
     }
 
-    public List<String> getServices() {
+    public String getServices() {
         return services;
     }
 
-    public void setServices(List<String> services) {
+    public void setServices(String services) {
         this.services = services;
     }
 
