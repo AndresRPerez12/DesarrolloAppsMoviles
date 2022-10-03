@@ -53,6 +53,8 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
                 return true;
             case R.id.update_company:
+                intent = new Intent(this, UpdateActivity.class);
+                startActivity(intent);
                 return true;
             case R.id.delete_company:
                 return true;

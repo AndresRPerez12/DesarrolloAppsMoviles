@@ -128,7 +128,8 @@
                 android:id="@+id/updateButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Actualizar compañía en la base de datos" />
+                android:text="Actualizar compañía en la base de datos"
+                android:onClick="updateCompany" />
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
