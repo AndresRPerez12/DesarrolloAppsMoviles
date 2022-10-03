@@ -43,7 +43,8 @@
                 android:id="@+id/deleteButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Eliminar compañía de la base de datos" />
+                android:text="Eliminar compañía de la base de datos"
+                android:onClick="deleteCompany" />
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

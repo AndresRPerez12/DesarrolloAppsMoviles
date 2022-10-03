@@ -39,7 +39,7 @@ public class CompanyController {
         System.out.println("Company " + company.getName() + " updated.");
     }
 
-    public void deleteUser(int id, Context context){
+    public void deleteCompany(int id, Context context){
         companyRepository = new CompanyRepository(context);
         companyRepository.deleteUser(id);
         System.out.println("Company with id" + id + " deleted.");

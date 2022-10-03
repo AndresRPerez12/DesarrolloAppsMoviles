@@ -1,39 +1,47 @@
 package co.edu.unal.usersdatabase;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
 
-import java.util.List;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.material.textfield.TextInputEditText;
 
 import co.edu.unal.usersdatabase.controller.CompanyController;
 import co.edu.unal.usersdatabase.dataAccess.model.Company;
 
-public class MainActivity extends AppCompatActivity {
+public class DeleteActivity extends AppCompatActivity {
 
-    private ListView listView;
+    private TextInputEditText emailInput;
+    private Button deleteButton;
     private CompanyController companyController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_delete);
         companyController = new CompanyController();
-        listView = (ListView) findViewById(R.id.list_view);
-        List<Company> companies = companyController.getAllCompanies(getApplicationContext());
-        String[] companiesArray = new String[companies.size()];
-        for( int i = 0 ; i < companies.size() ; i ++ ){
-            companiesArray[i] = companies.get(i).toString();
+        emailInput = (TextInputEditText) findViewById(R.id.deleteEmail);
+        deleteButton = (Button) findViewById(R.id.deleteButton);
+    }
+
+    public void deleteCompany(View view) {
+        String email = emailInput.getText().toString().trim();
+        Company company = companyController.getCompanyByEmail(email, getApplicationContext());
+        if(company != null) {
+            companyController.deleteCompany(company.id, getApplicationContext());
+            Toast toast = Toast.makeText(getApplicationContext(), "Eliminado con exito", Toast.LENGTH_SHORT);
+            toast.show();
+        }else{
+            Toast toast = Toast.makeText(getApplicationContext(), "Email no existe", Toast.LENGTH_SHORT);
+            toast.show();
         }
-        ArrayAdapter adapter = new ArrayAdapter<String>(this,
-                R.layout.activity_listview, companiesArray);
-        listView.setAdapter(adapter);
     }
 
     @Override

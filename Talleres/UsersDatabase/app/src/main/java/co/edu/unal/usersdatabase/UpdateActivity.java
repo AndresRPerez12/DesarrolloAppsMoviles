@@ -86,6 +86,8 @@ public class UpdateActivity extends AppCompatActivity {
                 startActivity(intent);
                 return true;
             case R.id.delete_company:
+                intent = new Intent(this, DeleteActivity.class);
+                startActivity(intent);
                 return true;
             case R.id.all_companies:
                 intent = new Intent(this, MainActivity.class);
