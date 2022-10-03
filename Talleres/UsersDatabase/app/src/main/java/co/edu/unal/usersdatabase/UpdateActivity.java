@@ -93,6 +93,14 @@ public class UpdateActivity extends AppCompatActivity {
                 intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
                 return true;
+            case R.id.filter_name:
+                intent = new Intent(this, FilterNameActivity.class);
+                startActivity(intent);
+                return true;
+            case R.id.filter_classification:
+                intent = new Intent(this, FilterClassificationActivity.class);
+                startActivity(intent);
+                return true;
         }
         return false;
     }

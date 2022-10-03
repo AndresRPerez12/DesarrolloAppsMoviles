@@ -16,35 +16,35 @@
             android:orientation="vertical" >
 
             <TextView
-                android:id="@+id/deleteTitile"
+                android:id="@+id/filterNameTitile"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Elminar Compañía"
+                android:text="Filtrar por nombre"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
             <TextView
-                android:id="@+id/deleteText"
+                android:id="@+id/filterNameText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Email de la compañía" />
+                android:text="Nombre de la compañía" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/deleteEmail"
+                    android:id="@+id/filterName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="example@company.com" />
+                    android:hint="Nombre" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
-                android:id="@+id/deleteButton"
+                android:id="@+id/filterNameButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Eliminar compañía de la base de datos"
-                android:onClick="deleteCompany" />
+                android:onClick="filterByName"
+                android:text="Filtrar" />
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

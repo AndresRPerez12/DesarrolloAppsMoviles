@@ -29,4 +29,10 @@ public interface CompanyDao {
 
     @Delete
     void deleteCompany(Company company);
+
+    @Query("SELECT * FROM company WHERE name LIKE '%' || :filterName || '%'")
+    List<Company> filterByName(String filterName);
+
+    @Query("SELECT * FROM company WHERE classification LIKE '%' || :filterClassification || '%'")
+    List<Company> filterByClassification(String filterClassification);
 }

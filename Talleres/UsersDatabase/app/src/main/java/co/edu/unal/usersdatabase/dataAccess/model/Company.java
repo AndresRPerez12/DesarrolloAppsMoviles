@@ -38,7 +38,7 @@ public class Company implements Serializable {
         if( phoneNumber != null ) stringBuilder.append("Tel: " +phoneNumber + '\n');
         if( email != null ) stringBuilder.append(email + '\n');
         if( services != null ) stringBuilder.append("Servicios: " + services + '\n');
-        if( classification != null ) stringBuilder.append("Clasifiación: " + classification + '\n');
+        if( classification != null ) stringBuilder.append("Clasificación: " + classification + '\n');
         return stringBuilder.toString();
     }
 

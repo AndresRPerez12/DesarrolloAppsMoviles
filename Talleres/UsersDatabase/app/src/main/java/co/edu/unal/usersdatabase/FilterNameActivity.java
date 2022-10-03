@@ -13,34 +13,42 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.util.List;
+
 import co.edu.unal.usersdatabase.controller.CompanyController;
 import co.edu.unal.usersdatabase.dataAccess.model.Company;
 
-public class DeleteActivity extends AppCompatActivity {
+public class FilterNameActivity extends AppCompatActivity {
 
-    private TextInputEditText emailInput;
-    private Button deleteButton;
+    private TextInputEditText nameInput;
+    private Button filterButton;
     private CompanyController companyController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_delete);
+        setContentView(R.layout.activity_filter_name);
         companyController = new CompanyController();
-        emailInput = (TextInputEditText) findViewById(R.id.deleteEmail);
-        deleteButton = (Button) findViewById(R.id.deleteButton);
+        nameInput = (TextInputEditText) findViewById(R.id.filterName);
+        filterButton = (Button) findViewById(R.id.filterNameButton);
     }
 
-    public void deleteCompany(View view) {
-        String email = emailInput.getText().toString().trim();
-        Company company = companyController.getCompanyByEmail(email, getApplicationContext());
-        if(company != null) {
-            companyController.deleteCompany(company.id, getApplicationContext());
-            Toast toast = Toast.makeText(getApplicationContext(), "Eliminado con exito", Toast.LENGTH_SHORT);
+    public void filterByName(View view) {
+        String name = nameInput.getText().toString().trim();
+        List<Company> companies = companyController.filterByName(name, getApplicationContext());
+        if( companies.isEmpty() ){
+            Toast toast = Toast.makeText(getApplicationContext(),
+                    "No se encontraron resultados", Toast.LENGTH_SHORT);
             toast.show();
         }else{
-            Toast toast = Toast.makeText(getApplicationContext(), "Email no existe", Toast.LENGTH_SHORT);
+            Toast toast = Toast.makeText(getApplicationContext(),
+                    "Filtrado con éxito", Toast.LENGTH_SHORT);
             toast.show();
+            Intent intent;
+            intent = new Intent(this, MainActivity.class);
+            intent.putExtra(MainActivity.EXTRA_FILTER, "name");
+            intent.putExtra(MainActivity.EXTRA_FILTER_VALUE, name);
+            startActivity(intent);
         }
     }
 
@@ -70,14 +78,6 @@ public class DeleteActivity extends AppCompatActivity {
                 return true;
             case R.id.all_companies:
                 intent = new Intent(this, MainActivity.class);
-                startActivity(intent);
-                return true;
-            case R.id.filter_name:
-                intent = new Intent(this, FilterNameActivity.class);
-                startActivity(intent);
-                return true;
-            case R.id.filter_classification:
-                intent = new Intent(this, FilterClassificationActivity.class);
                 startActivity(intent);
                 return true;
         }

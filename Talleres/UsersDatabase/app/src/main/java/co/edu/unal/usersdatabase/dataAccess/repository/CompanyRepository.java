@@ -44,4 +44,12 @@ public class CompanyRepository {
         database.companyDao().deleteCompany(company);
     }
 
+    public List<Company> filterByName(String filterName){
+        return database.companyDao().filterByName(filterName);
+    }
+
+    public List<Company> filterByClassification(String filterClassification){
+        return database.companyDao().filterByClassification(filterClassification);
+    }
+
 }

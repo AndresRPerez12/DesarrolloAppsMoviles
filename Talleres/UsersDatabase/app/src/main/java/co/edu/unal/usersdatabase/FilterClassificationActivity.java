@@ -6,9 +6,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,48 +18,38 @@ import java.util.List;
 import co.edu.unal.usersdatabase.controller.CompanyController;
 import co.edu.unal.usersdatabase.dataAccess.model.Company;
 
-public class CreateActivity extends AppCompatActivity {
+public class FilterClassificationActivity extends AppCompatActivity {
 
-    private TextInputEditText nameInput;
-    private TextInputEditText urlInput;
-    private TextInputEditText telephoneInput;
-    private TextInputEditText emailInput;
-    private TextInputEditText servicesInput;
     private TextInputEditText classificationInput;
-    private Button createButton;
+    private Button filterButton;
     private CompanyController companyController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create);
+        setContentView(R.layout.activity_filter_classification);
         companyController = new CompanyController();
-        nameInput = (TextInputEditText) findViewById(R.id.createName);
-        urlInput = (TextInputEditText) findViewById(R.id.createURL);
-        telephoneInput = (TextInputEditText) findViewById(R.id.createPhone);
-        emailInput = (TextInputEditText) findViewById(R.id.createEmail);
-        servicesInput = (TextInputEditText) findViewById(R.id.createServices);
-        classificationInput = (TextInputEditText) findViewById(R.id.createClassification);
-        createButton = (Button) findViewById(R.id.createButton);
+        classificationInput = (TextInputEditText) findViewById(R.id.filterClassification);
+        filterButton = (Button) findViewById(R.id.filterClassificationButton);
     }
 
-    public void createCompany(View view) {
-        String name = nameInput.getText().toString().trim();
-        String url = urlInput.getText().toString().trim();
-        String telephone = telephoneInput.getText().toString().trim();
-        String email = emailInput.getText().toString().trim();
-        String services = servicesInput.getText().toString().trim();
+    public void filterByClassification(View view) {
         String classification = classificationInput.getText().toString().trim();
-        Company company = new Company();
-        company.setName(name);
-        company.setUrl(url);
-        company.setPhoneNumber(telephone);
-        company.setEmail(email);
-        company.setServices(services);
-        company.setClassification(classification);
-        companyController.createCompany(company, getApplicationContext());
-        Toast toast = Toast.makeText(getApplicationContext(), "Creado con exito", Toast.LENGTH_SHORT);
-        toast.show();
+        List<Company> companies = companyController.filterByClassification(classification, getApplicationContext());
+        if( companies.isEmpty() ){
+            Toast toast = Toast.makeText(getApplicationContext(),
+                    "No se encontraron resultados", Toast.LENGTH_SHORT);
+            toast.show();
+        }else{
+            Toast toast = Toast.makeText(getApplicationContext(),
+                    "Filtrado con éxito", Toast.LENGTH_SHORT);
+            toast.show();
+            Intent intent;
+            intent = new Intent(this, MainActivity.class);
+            intent.putExtra(MainActivity.EXTRA_FILTER, "classification");
+            intent.putExtra(MainActivity.EXTRA_FILTER_VALUE, classification);
+            startActivity(intent);
+        }
     }
 
     @Override

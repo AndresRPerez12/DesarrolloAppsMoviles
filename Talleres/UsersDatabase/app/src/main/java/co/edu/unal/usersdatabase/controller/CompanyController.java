@@ -45,4 +45,14 @@ public class CompanyController {
         System.out.println("Company with id" + id + " deleted.");
     }
 
+    public List<Company> filterByName(String filterName, Context context){
+        companyRepository = new CompanyRepository(context);
+        return companyRepository.filterByName(filterName);
+    }
+
+    public List<Company> filterByClassification(String filterClassification, Context context){
+        companyRepository = new CompanyRepository(context);
+        return companyRepository.filterByClassification(filterClassification);
+    }
+
 }
