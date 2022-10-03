@@ -12,7 +12,7 @@ public class CompanyController {
     private CompanyRepository companyRepository;
     public  CompanyController(){}
 
-    public List<Company> getAllUsers(Context context){
+    public List<Company> getAllCompanies(Context context){
         companyRepository = new CompanyRepository(context);
         return companyRepository.getAllUsers();
     }

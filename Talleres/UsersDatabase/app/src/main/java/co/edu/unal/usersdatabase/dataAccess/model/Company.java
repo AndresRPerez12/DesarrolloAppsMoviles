@@ -10,7 +10,7 @@ import java.util.List;
 @Entity(indices = {@Index(value = {"email"}, unique = true)})
 public class Company implements Serializable {
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     public int id;
 
     @ColumnInfo(name = "name")
@@ -30,6 +30,17 @@ public class Company implements Serializable {
 
     @ColumnInfo(name = "classification")
     private String classification;
+
+    public String toString(){
+        StringBuilder stringBuilder = new StringBuilder();
+        if( name != null ) stringBuilder.append(name + '\n');
+        if( url != null ) stringBuilder.append(url + '\n');
+        if( phoneNumber != null ) stringBuilder.append("Tel: " +phoneNumber + '\n');
+        if( email != null ) stringBuilder.append(email + '\n');
+        if( services != null ) stringBuilder.append("Servicios: " + services + '\n');
+        if( classification != null ) stringBuilder.append("Clasifiación: " + classification + '\n');
+        return stringBuilder.toString();
+    }
 
     public int getId() {
         return id;

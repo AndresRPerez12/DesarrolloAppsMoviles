@@ -23,7 +23,7 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
             <TextView
-                android:id="@+id/updateNameText"
+                android:id="@+id/createNameText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Nombre de la compañía" />
@@ -33,14 +33,14 @@
                 android:layout_height="match_parent">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/updateName"
+                    android:id="@+id/createName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Nombre" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
-                android:id="@+id/updateURLText"
+                android:id="@+id/createURLText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="URL a la página de la compañía" />
@@ -50,14 +50,14 @@
                 android:layout_height="match_parent">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/updateURL"
+                    android:id="@+id/createURL"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="URL" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
-                android:id="@+id/updatePhoneText"
+                android:id="@+id/createPhoneText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Teléfono" />
@@ -128,7 +128,8 @@
                 android:id="@+id/createButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Crear compañía en la base de datos" />
+                android:text="Crear compañía en la base de datos"
+                android:onClick="createCompany" />
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
