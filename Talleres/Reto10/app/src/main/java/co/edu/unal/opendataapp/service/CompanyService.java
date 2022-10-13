@@ -7,10 +7,11 @@ import org.json.JSONObject;
 
 import java.util.List;
 
+import co.edu.unal.opendataapp.model.Company;
 import retrofit2.Call;
 import retrofit2.http.GET;
 
 public interface CompanyService {
     @GET("8hn7-rpp8.json/")
-    Call<List<JSONObject>> getAllCompanies();
+    Call<List<Company>> getAllCompanies();
 }
