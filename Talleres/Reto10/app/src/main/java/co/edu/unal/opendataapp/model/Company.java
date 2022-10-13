@@ -226,4 +226,17 @@ public class Company {
         this.grupoEnNiif = grupoEnNiif;
     }
 
+    public String toString(){
+        StringBuilder stringBuilder = new StringBuilder();
+        if( this.no != null ) stringBuilder.append("No. " +no + '\n');
+        if( this.razonSocial != null ) stringBuilder.append(razonSocial + '\n');
+        if( this.departamentoDomicilio != null ) stringBuilder.append(departamentoDomicilio + '\n');
+        if( this.ciiu != null ) stringBuilder.append(ciiu + '\n');
+        if( this.gananciaPerdida2018 != null )
+            stringBuilder.append("Ingresos netos 2018: $" +gananciaPerdida2018 + '\n');
+        if( this.totalPatrimonio2018 != null )
+            stringBuilder.append("Patrimonio 2018: $" + totalPatrimonio2018 + '\n');
+        return stringBuilder.toString();
+    }
+
 }

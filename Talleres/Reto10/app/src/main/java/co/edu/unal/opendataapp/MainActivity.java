@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.provider.Settings;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -23,29 +25,37 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class MainActivity extends AppCompatActivity {
 
     private Retrofit retrofit;
+    private ListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        listView = (ListView) findViewById(R.id.list_view);
 
-        // Create Retrofit object
+        // Create Retrofit object and make a call to the API
         retrofit = createCompanyRepository();
         CompanyService companyService = retrofit.create(CompanyService.class);
         Call<List<Company>> call = companyService.getAllCompanies();
         System.out.println("BEFORE QUERY");
+
+        // Save parent object
+        MainActivity mainActivity = this;
         call.enqueue(new Callback<List<Company>>() {
             @Override
             public void onResponse(Call<List<Company>> call, Response<List<Company>> response) {
-                System.out.println( "CODE: " + response.code() + "\n" );
-                System.out.println(response.body().size());
-                for( Company company : response.body() ){
-                    System.out.println(company.getRazonSocial());
-                }
                 if( !response.isSuccessful() ){
                     System.out.println( "Code: " + response.code() + "\n" );
                     return;
                 }
+                List<Company> companies = response.body();
+                String[] companiesArray = new String[companies.size()];
+                for( int i = 0 ; i < companies.size() ; i ++ ){
+                    companiesArray[i] = companies.get(i).toString();
+                }
+                ArrayAdapter adapter = new ArrayAdapter<String>(mainActivity,
+                        R.layout.activity_listview, companiesArray);
+                listView.setAdapter(adapter);
             }
 
             @Override
