@@ -1,0 +1,6 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/view_all"
+        android:title="Ver todo" />
+    <item android:id="@+id/filter_option"
+        android:title="Filtrar por departamento" />
+</menu>
